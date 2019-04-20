@@ -1,4 +1,7 @@
+print("Checking git directories...\r", end='')
+
 import os
+import shared_choice
 import sys
 import git
 
@@ -19,10 +22,6 @@ dir_path = os.path.dirname(sys.argv[0]) + "/../../"
 if len(sys.argv) > 1:
     dir_path = sys.argv[1]
 dir_path = os.path.abspath(dir_path);
-
-print()
-print("~*~*~ Looking for directories ~*~*~")
-print()
     
     # Walk through all directories to find a .git file
 git_dirs = []
@@ -30,6 +29,15 @@ for (root, dirs, files) in os.walk(dir_path):
     for name in files:
         if name == ".git":
             git_dirs.append(os.path.abspath(root))
+    
+print("This script would like to find the correct branch for:")
+for dir in git_dirs:
+    print(" * " + os.path.relpath(dir, dir_path))
+print()
+
+if False == shared_choice.yn("Is correcting git branches OK?"):
+    sys.exit()
+print()
     
     # For every git dir, we want to evaluate their current
     # branch and correct it if it is HEAD

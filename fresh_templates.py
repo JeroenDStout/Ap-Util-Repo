@@ -1,6 +1,9 @@
+print("Checking templates...\r", end='')
+
 import os
 import sys
 import shutil
+import shared_choice
 
     # Find our startup path; by default our path + "../../"
     # This usually corresponds to the main git directory
@@ -28,6 +31,15 @@ for folder in fresh_folders:
                 continue
             fresh_files.append([os.path.abspath(os.path.join(root, name)), os.path.abspath(os.path.join(root + "/../", name.rstrip(".ftemplate")))])
     
+print("This script would like to copy the following templates:")
+for [input, output] in fresh_files:
+    print(" * " + os.path.relpath(output, dir_path))
+print()
+    
+if False == shared_choice.yn("Is copying OK?"):
+    sys.exit()
+print()
+    
 print("Copying .ftemplate files...")
  
     # Copy the files, removing the suffix
@@ -38,9 +50,5 @@ def copyFile(src, dest):
         print('Error: %s' % e)
     except IOError as e:
         print('Error: %s' % e.strerror)
-
 for [input, output] in fresh_files:
-    print("* " + os.path.relpath(output, dir_path))
     copyFile(input, output)
-    
-print("Done.")
