@@ -1,0 +1,28 @@
+import shared_choice
+
+print("                        *~*~*")
+print("")
+print(" Dear user,")
+print("")
+print(" This toolset uses websockets and http for various things:")
+print(" it may seem very, very tempting to forward a port and use it")
+print(" through the internet.")
+print()
+print("        You are hereby advised not to do this")
+print()
+print(" These tools are in no way designed to be used outside of a")
+print(" trusted local network and will fall apart like papier-mache")
+print(" if some hostile person on the internet as much as coughs.")
+print()
+print(" Hereby hoping to have informed you sufficiently,")
+print(" Yours faithfully,")
+print()
+print("  Jeroen D Stout")
+print()
+
+if False == shared_choice.yn("Please confirm you understand."):
+    print()
+    print("OK, well, I'm just a script, I can't stop you, in reality.")
+    print()
+    print("Press any key to continue.")
+    input()
