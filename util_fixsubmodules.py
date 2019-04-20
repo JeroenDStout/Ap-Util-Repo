@@ -79,7 +79,7 @@ for dir in git_dirs:
     if matchHead != 0:
         print("Detached head matching")
         for matchNm in matchNames:
-            if matchNm == matchHead:
+            if matchNm == matchHead.name:
                 print(" - " + matchNm + " *")
             else:
                 print(" - " + matchNm)
