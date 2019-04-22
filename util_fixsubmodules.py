@@ -16,6 +16,11 @@ branch_name_priority = [
     "-develop"
 ]
 
+exclude_dirs = [
+    ".vs",
+    "node_modules"
+]
+
     # Find our startup path; by default our path + "../../"
     # This usually corresponds to the main git directory
 dir_path = os.path.dirname(sys.argv[0]) + "/../../"
@@ -24,8 +29,11 @@ if len(sys.argv) > 1:
 dir_path = os.path.abspath(dir_path);
     
     # Walk through all directories to find a .git file
+    # We do not follow symlinks as we're only really
+    # interested in the basic git structure
 git_dirs = []
-for (root, dirs, files) in os.walk(dir_path):
+for (root, dirs, files) in os.walk(dir_path, followlinks=False):
+    dirs[:] = [d for d in dirs if d not in exclude_dirs]
     for name in files:
         if name == ".git":
             git_dirs.append(os.path.abspath(root))
