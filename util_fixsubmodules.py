@@ -146,14 +146,17 @@ for dir in git_dirs:
                 break
             repo.delete_head(branchName)            
             
-        if branchName:
-            new_head = repo.create_head(branchName)
-            repo.head.set_reference(new_head)
+        if branchName == 0:
+            break
+        
+        new_head = repo.create_head(branchName)
+        repo.head.set_reference(new_head)
                 
         print()
         continue
         
-    print("No matches with remotes! The current commit seems to have no branches.")
+    print()
+    print("The current commit cannot be set to any existing branch")
     
     branch_add = 1;
     found = 1
