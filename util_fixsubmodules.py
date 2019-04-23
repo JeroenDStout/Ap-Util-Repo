@@ -42,7 +42,6 @@ print("This script would like to find the correct branch for:")
 for dir in git_dirs:
     print(" * " + os.path.relpath(dir, dir_path))
 print()
-
 if False == shared_choice.yn("Is correcting git branches OK?"):
     sys.exit()
 print()
@@ -115,6 +114,7 @@ for dir in git_dirs:
         # we again print all with the selected one marked
     if matchHead != 0:
         print("Detached head matching")
+        
         for matchNm in matchNames:
             if matchNm == matchHead:
                 print(" - " + matchNm + " *")
@@ -122,13 +122,59 @@ for dir in git_dirs:
                 print(" - " + matchNm)
                 
         branchName = matchHead.split('/', 1)[-1]
-        new_head = repo.create_head(branchName)
-        repo.head.set_reference(new_head)
+                
+        for head in repo.heads:
+            if head.name != branchName:
+                continue
+            
+            commits_behind  = repo.iter_commits(branchName + '..' + matchHead)
+            commits_behind_count = sum(1 for c in commits_behind)
+            
+            commits_ahead   = repo.iter_commits(matchHead + '..' + branchName)
+            commits_ahead_count = sum(1 for c in commits_ahead)
+            
+            print()
+            print("The branch '" + branchName + "' already exists")
+            print(" " + str(commits_behind_count) + " commits behind " + str(matchHead))
+            print(" " + str(commits_ahead_count) + " commits ahead " + str(matchHead))
+            print()
+            print("This branch will be moved to the current commit. You probably")
+            print("should not want to do this if the branch is ahead.")
+            print()
+            if False == shared_choice.yn("Is moving this branch OK?"):
+                branchName = 0
+                break
+            repo.delete_head(branchName)            
+            
+        if branchName:
+            new_head = repo.create_head(branchName)
+            repo.head.set_reference(new_head)
                 
         print()
         continue
         
-    print("No matches with remotes! This is truly a HEAD.")
+    print("No matches with remotes! The current commit seems to have no branches.")
+    
+    branch_add = 1;
+    found = 1
+    while found:
+        branchName = "temp-" + str(branch_add) + "-develop"
+        found = 0
+        for head in repo.heads:
+            if head.name != branchName:
+                continue
+            found = 1
+            break
+        branch_add += 1
+        
+    print("We can name this HEAD '" + str(branchName) + "'")
+    print()
+    if False == shared_choice.yn("Is creating this branch OK?"):
+        continue
+        
+    new_head = repo.create_head(branchName)
+    repo.head.set_reference(new_head)
+    
     print()
     
 print("Done.")
