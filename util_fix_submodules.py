@@ -77,6 +77,8 @@ for dir in git_dirs:
             continue
         matchNames.append(head.name)
         for num, name in enumerate(branch_name_priority):
+            if not head.name.endswith(name):
+                continue
             if matchQuality <= num:
                 continue
             matchHead = head
@@ -96,7 +98,7 @@ for dir in git_dirs:
         
     print("Detached head with no matching branches, fetching...")
     
-        # Fetch from the repo's remotes to see if any repote branches
+        # Fetch from the repo's remotes to see if any remote branches
         # match our pattern
     matchNames = []
     for remote in repo.remotes:
@@ -105,6 +107,8 @@ for dir in git_dirs:
                 continue
             matchNames.append(fetch_info.ref.name)
             for num, name in enumerate(branch_name_priority):
+                if not fetch_info.ref.name.endswith(name):
+                    continue
                 if matchQuality <= num:
                     continue
                 matchHead = fetch_info.ref.name
