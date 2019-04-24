@@ -165,7 +165,7 @@ for dir in git_dirs:
     branch_add = 1;
     found = 1
     while found:
-        branchName = "temp-" + str(branch_add) + "-develop"
+        branchName = str(branch_add) + "-local-develop"
         found = 0
         for head in repo.heads:
             if head.name != branchName:
