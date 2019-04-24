@@ -11,12 +11,18 @@ dir_path = os.path.dirname(sys.argv[0]) + "/../../"
 if len(sys.argv) > 1:
     dir_path = sys.argv[1]
 
+exclude_dirs = [
+    ".vs",
+    "node_modules"
+]
+
     # Walk through all the folders; templates must be stored
     # in a "Fresh" folder and have the suffix ".ftemplate"
     # f.i., /VS/Fresh/settings.user.ftemplate becomes
     #       /VS/settings.user
 fresh_folders = []
 for (root, dirs, files) in os.walk(dir_path):
+    dirs[:] = [d for d in dirs if d not in exclude_dirs]
     for name in dirs:
         if name != "Fresh":
             continue
