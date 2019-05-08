@@ -44,6 +44,7 @@ for (root, dirs, files) in os.walk(dir_path, followlinks=False):
 print("                                             \r", end='')
 
 possibly_behind_count = 0
+dirty_count = 0
 
     # For every git dir, we want to evaluate their current
     # branch and see if it is behind an identical remote
@@ -86,6 +87,12 @@ for dir in git_dirs:
     
     any_shown_behind = 0
     
+    if repo.is_dirty():
+        any_shown_behind = 1;
+        dirty_count += 1;
+        print()
+        print(" Is dirty!")
+    
     for branch in remote_branch_names:
         commits_ahead   = repo.iter_commits(branch + '..' + repo_head_name)
         commits_ahead_count = sum(1 for c in commits_ahead)
@@ -107,9 +114,12 @@ for dir in git_dirs:
     if 1 == any_shown_behind:    
         print()
     
-if possibly_behind_count > 0:
+if possibly_behind_count > 0 or dirty_count > 0:
     print("                                                        \r", end = '')
-    print(" " + str(possibly_behind_count) + " subrepos were found to be behind.")
+    if dirty_count > 0:
+        print(" " + str(dirty_count) + " subrepos were found to be dirty.")
+    if possibly_behind_count > 0:
+        print(" " + str(possibly_behind_count) + " subrepos were found to be behind.")
     print()
     print("Press any key to continue.")
     input()
