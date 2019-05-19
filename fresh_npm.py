@@ -15,6 +15,10 @@ if len(sys.argv) > 1:
 requirements = []
 with open(reqJSONPath, 'r') as f:
     requirements = json.load(f)
+    
+if requirements.get("npm", 0) == 0:
+    print("No npm requirements found       ")
+    sys.exit()
 npmReq = requirements["npm"]
     
 print("This script would like to use npm to install the following items using -g:")
