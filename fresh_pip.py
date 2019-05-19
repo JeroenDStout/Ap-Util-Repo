@@ -14,6 +14,11 @@ if len(sys.argv) > 1:
 requirements = []
 with open(reqJSONPath, 'r') as f:
     requirements = json.load(f)
+    
+if requirements.get("pip", 0) == 0:
+    print("No pip requirements found       ")
+    sys.exit()
+    
 pipReq = requirements["pip"]
     
 print("This script would like to use pip to install the following items:")

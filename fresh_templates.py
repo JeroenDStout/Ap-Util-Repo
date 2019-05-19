@@ -28,6 +28,10 @@ for (root, dirs, files) in os.walk(dir_path):
             continue
         fresh_folders.append(os.path.abspath(os.path.join(root, name)))
     
+if len(fresh_folders) == 0:
+    print("No templates found       ")
+    sys.exit()
+    
     # Walk through the files
 fresh_files = []
 for folder in fresh_folders:

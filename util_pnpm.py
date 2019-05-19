@@ -20,6 +20,10 @@ if len(sys.argv) > 2:
 requirements = []
 with open(reqJSONPath, 'r') as f:
     requirements = json.load(f)
+    
+if requirements.get("pnpm", 0) == 0:
+    print("No pnpm requirements found       ")
+    sys.exit()
 pnpmReq = requirements["pnpm"]
     
 print("This script would like to use pnpm to install in:")
